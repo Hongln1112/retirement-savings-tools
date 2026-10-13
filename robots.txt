@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://retirement-savings-tools.vercel.app/sitemap.xml

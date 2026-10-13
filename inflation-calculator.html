@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inflation Calculator — See How Much Your Money Loses Value Over Time</title>
+<meta name="description" content="Free inflation calculator: see how inflation erodes your purchasing power. What will $100 be worth in 10, 20, or 30 years?">
+<link rel="canonical" href="https://retirement-savings-tools.vercel.app/inflation-calculator.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;
+    --good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
+  .back{display:inline-block;font-size:13px;font-weight:500;color:var(--brand);text-decoration:none;margin-bottom:24px;}
+  .back:hover{text-decoration:underline;}
+  h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(28px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:12px;
+  }
+  .sub{font-size:16px;color:var(--muted);max-width:560px;margin-bottom:32px;}
+  .card{background:#fff;border:1px solid var(--line);padding:28px;border-radius:4px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;letter-spacing:.02em;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);background:#fdfbf7;outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);}
+  .prefix{position:relative;}
+  .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .prefix .input{padding-left:32px;}
+  .suffix{position:relative;}
+  .suffix .sign{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .suffix .input{padding-right:36px;}
+  .btn{width:100%;padding:15px;font-size:15px;font-weight:600;color:#fff;background:var(--brand);border:none;cursor:pointer;margin-top:8px;letter-spacing:.02em;transition:background .15s;}
+  .btn:hover{background:var(--brand-dark);}
+  .result{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;}
+  .result .num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(40px,8vw,52px);font-weight:900;color:var(--bad);line-height:1.1;margin-top:8px;}
+  .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .result-row:last-child{border-bottom:none;}
+  .result-row .label{color:var(--muted);}
+  .result-row .val{font-weight:600;}
+  .section{margin-top:48px;}
+  .section h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:22px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);
+  }
+  .section p{font-size:15px;color:#4a4035;margin-bottom:14px;}
+  .faq-item{border:1px solid var(--line);margin-bottom:8px;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;}
+  .faq-item.open .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a p{padding:0 18px 16px;font-size:14px;color:#4a4035;margin:0;}
+  .disclaimer{font-size:12px;color:#9a8e7d;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);line-height:1.7;}
+  @media (max-width:520px){.wrap{padding:32px 16px 48px;}.card{padding:20px 16px;}}
+
+  @media print {
+    .btn, .back, .faq-q .chev, #chart, .related-tools, .disclaimer { display: none !important; }
+    body { background: #fff !important; }
+    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+    .result { border-top: 2px solid #333 !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← All tools</a>
+  <h1>Inflation Calculator</h1>
+  <p class="sub">See how inflation quietly erodes your purchasing power. What seems like a lot of money today may be worth much less in the future.</p>
+  <p style="font-size:15px;color:#4a4035;margin-bottom:24px;max-width:640px;">
+Inflation is the silent killer of purchasing power. At 3% annually, prices roughly double every 24 years —
+meaning your retirement savings need to grow just to stay in place. This free inflation calculator
+shows exactly how much future money will be worth in today's dollars, and how much you need to save
+to maintain your lifestyle. If you're holding cash, this calculator will be a wake-up call.
+</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="amount">Amount today</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="amount" type="number" min="0" step="any" placeholder="e.g. 100" value="100"></div>
+    </div>
+    <div class="field">
+      <label for="rate">Average annual inflation rate</label>
+      <div class="suffix"><span class="sign">%</span><input class="input" id="rate" type="number" min="0" step="any" placeholder="e.g. 3" value="3"></div>
+      <div class="hint">US average is about 3% historically. The 2021–2022 spike hit 9%. Use 3% as a long-term estimate.</div>
+    </div>
+    <div class="field">
+      <label for="years">Years in the future</label>
+      <input class="input" id="years" type="number" min="0" max="100" placeholder="e.g. 20" value="20">
+    </div>
+    <button class="btn" onclick="calc()">Calculate Future Value</button>
+
+    <div class="result hidden" id="result">
+      <div class="big">That $<span id="r-amount">100</span> will be worth</div>
+      <div class="num" id="future">$0</div>
+      <div style="margin-top:24px;">
+        <div class="result-row"><span class="label">Purchasing power lost</span><span class="val" id="lost">$0</span></div>
+        <div class="result-row"><span class="label">What you need to keep the same value</span><span class="val" id="needed">$0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Why inflation matters for retirement</h2>
+    <p>If you're 35 and planning to retire at 65, that's 30 years of inflation. At 3% annually, prices roughly <strong>double every 24 years</strong>. That means a $60,000/year lifestyle today will cost about $120,000/year in 25 years.</p>
+    <p>This is why keeping all your savings in cash is dangerous — it's slowly being eaten away. Investing in stocks and real estate is the best hedge against inflation.</p>
+  </div>
+
+  
+  <div class="section">
+    <h2>Common Mistakes to Avoid</h2>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Thinking cash is safe</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">Cash in a savings account at 0.5% interest while inflation is 3% loses 2.5% of purchasing power per year. Over 20 years, that's nearly 40% of your wealth.</p>
+    </div>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Ignoring healthcare inflation</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">Healthcare costs have historically risen 5–6% per year, well above general inflation. If you're retiring early, this hits hardest.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <button class="faq-q">What causes inflation? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Too much money chasing too few goods. It can come from government stimulus, supply chain issues, rising wages, or rising energy prices. The Federal Reserve targets about 2% inflation per year.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What investments beat inflation? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Stocks historically beat inflation by about 7% per year after inflation. Real estate, commodities, and TIPS (Treasury Inflation-Protected Securities) are also common hedges. Cash bonds usually barely keep up.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Is inflation always bad? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Moderate inflation (2–3%) is actually healthy — it encourages spending and investment. Deflation (falling prices) is much worse, because people stop spending and the economy stalls.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+  <h2>Related Tools</h2>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="compound-interest-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Compound Interest Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Invest to beat inflation — see how</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="social-security-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Social Security Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Benefits are indexed to inflation — estimate yours</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="emergency-fund-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Emergency Fund Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Keep cash accessible but not over-allocated</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+</div>
+
+  <div class="disclaimer">
+    This calculator provides estimates for general guidance only. Inflation rates vary year to year and are hard to predict. Actual future purchasing power depends on economic conditions.
+  </div>
+</div>
+
+<script>
+function calc(){
+  var amount=parseFloat(document.getElementById('amount').value)||0;
+  var rate=parseFloat(document.getElementById('rate').value)||0;
+  var years=parseFloat(document.getElementById('years').value)||0;
+  var future=amount/Math.pow(1+rate/100,years);
+  var lost=amount-future;
+  var needed=amount*Math.pow(1+rate/100,years);
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('r-amount').textContent=amount;
+  document.getElementById('future').textContent='$'+future.toLocaleString('en-US',{maximumFractionDigits:0});
+  document.getElementById('lost').textContent='$'+lost.toLocaleString('en-US',{maximumFractionDigits:0});
+  document.getElementById('needed').textContent='$'+needed.toLocaleString('en-US',{maximumFractionDigits:0});
+}
+document.querySelectorAll('.faq-q').forEach(function(q){
+  q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+          "@type": "Question",
+          "name": "What causes inflation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Too much money chasing too few goods. It can come from government stimulus, supply chain issues, rising wages, or rising energy prices. The Federal Reserve targets about 2% inflation per year."
+          }
+        },{
+          "@type": "Question",
+          "name": "What investments beat inflation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Stocks historically beat inflation by about 7% per year after inflation. Real estate, commodities, and TIPS (Treasury Inflation-Protected Securities) are also common hedges. Cash bonds usually barely keep up."
+          }
+        },{
+          "@type": "Question",
+          "name": "Is inflation always bad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Moderate inflation (2–3%) is actually healthy — it encourages spending and investment. Deflation (falling prices) is much worse, because people stop spending and the economy stalls."
+          }
+        }]
+}
+</script>
+</body>
+</html>

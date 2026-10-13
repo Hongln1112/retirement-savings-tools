@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retirement & Savings Calculators — Free Financial Planning Tools</title>
+<meta name="description" content="Free retirement and savings calculators: 401k, IRA, compound interest, social security, emergency fund, inflation, and more. Plan your financial future in seconds.">
+<link rel="canonical" href="https://retirement-savings-tools.vercel.app/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF6F0;--card:#ffffff;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;
+    --good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:48px 24px 64px;}
+
+  /* Header */
+  .masthead{text-align:center;margin-bottom:32px;}
+  .masthead .kicker{font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;}
+  h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(32px,5vw,48px);font-weight:900;line-height:1.15;letter-spacing:-.5px;margin-bottom:16px;
+  }
+  .sub{font-size:16px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.6;}
+
+  /* Search box */
+  .search-box{
+    max-width:600px;margin:32px auto 16px;position:relative;
+  }
+  .search-box input{
+    width:100%;padding:16px 20px;border:2px solid var(--line-dark);border-radius:12px;
+    font-size:16px;font-family:inherit;background:#fff;outline:none;
+  }
+  .search-box input:focus{border-color:var(--brand);}
+  .search-box button{
+    position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    padding:10px 20px;background:var(--line-dark);color:#fff;border:none;border-radius:8px;
+    font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .search-results{
+    max-width:600px;margin:0 auto;display:none;
+    background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .search-results a{
+    display:block;padding:12px 16px;border-bottom:1px solid var(--line);
+    text-decoration:none;color:inherit;font-size:14px;
+  }
+  .search-results a:last-child{border-bottom:none;}
+  .search-results a:hover{background:#fdfbf7;color:var(--brand);}
+  .search-results .no-result{padding:16px;color:var(--muted);font-size:14px;text-align:center;}
+  .hot-tags{
+    max-width:600px;margin:16px auto 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  }
+  .hot-tags span{
+    font-size:12px;color:var(--muted);
+  }
+  .hot-tags a{
+    font-size:12px;color:var(--brand);text-decoration:none;padding:4px 10px;background:#f0e8da;border-radius:20px;
+  }
+  .hot-tags a:hover{background:var(--brand);color:#fff;}
+
+  /* Category cards */
+  .categories{margin-top:48px;}
+  .categories h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:24px;font-weight:700;text-align:center;margin-bottom:28px;
+  }
+  .cat-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .cat-card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .cat-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(44,36,24,0.08);}
+  .cat-icon{
+    width:48px;height:48px;border-radius:12px;background:#f0e8da;display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  }
+  .cat-icon svg{width:24px;height:24px;stroke:var(--brand);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .cat-card h3{
+    font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:700;margin-bottom:12px;
+  }
+  .cat-card ul{list-style:none;}
+  .cat-card li{margin-bottom:8px;}
+  .cat-card a{
+    font-size:14px;color:var(--ink);text-decoration:none;line-height:1.4;
+  }
+  .cat-card a:hover{color:var(--brand);}
+
+  /* Guides section */
+  .guides{margin-top:48px;padding:28px;background:#f0e8da;border-radius:16px;}
+  .guides h2{
+    font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;margin-bottom:16px;
+  }
+  .guide-item{
+    display:flex;justify-content:space-between;align-items:center;padding:12px 0;
+    border-bottom:1px solid var(--line);text-decoration:none;color:inherit;
+  }
+  .guide-item:last-child{border-bottom:none;}
+  .guide-item:hover{color:var(--brand);}
+  .guide-item strong{font-size:15px;}
+  .guide-item small{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+  .guide-item .arrow{color:var(--brand);font-weight:600;}
+
+  /* FAQ section */
+  .faq{margin-top:48px;}
+  .faq h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:24px;font-weight:700;margin-bottom:20px;
+  }
+  .faq-item{
+    border-bottom:1px solid var(--line);padding:16px 0;
+  }
+  .faq-q{
+    font-weight:600;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  }
+  .faq-q .chev{
+    transition:transform .2s;color:var(--brand);font-weight:700;
+  }
+  .faq-item.open .faq-q .chev{transform:rotate(180deg);}
+  .faq-a{
+    display:none;margin-top:12px;font-size:14px;color:#4a4035;line-height:1.6;
+  }
+  .faq-item.open .faq-a{display:block;}
+
+  /* About section */
+  .about{margin-top:48px;padding-top:32px;border-top:2px solid var(--line-dark);}
+  .about h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:24px;font-weight:700;margin-bottom:16px;
+  }
+  .about p{font-size:15px;color:#4a4035;margin-bottom:14px;line-height:1.7;}
+
+  /* Back to top */
+  .back-to-top{
+    position:fixed;bottom:24px;right:24px;
+    width:48px;height:48px;border-radius:50%;
+    background:var(--line-dark);color:#fff;border:none;
+    font-size:20px;cursor:pointer;
+    display:none;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px rgba(44,36,24,0.15);
+    transition:background .2s;
+  }
+  .back-to-top:hover{background:var(--brand);}
+  .back-to-top.visible{display:flex;}
+
+  /* Disclaimer */
+  .disclaimer{
+    font-size:12px;color:#9a8e7d;margin-top:48px;padding-top:20px;border-top:1px solid var(--line);line-height:1.7;
+  }
+
+  /* Footer */
+  footer{
+    margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+  footer a{color:var(--brand);text-decoration:none;font-weight:500;}
+  footer a:hover{text-decoration:underline;}
+
+  @media (max-width:768px){
+    .cat-grid{grid-template-columns:1fr;}
+    .search-box button{padding:8px 14px;font-size:13px;}
+    .search-box input{padding:14px 16px;font-size:15px;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:32px 16px 48px;}
+    .search-box{margin:24px auto 12px;}
+    .hot-tags{gap:6px;}
+    .hot-tags a{font-size:11px;padding:3px 8px;}
+    h1{font-size:28px;}
+    .sub{font-size:15px;}
+    .back-to-top{bottom:16px;right:16px;width:40px;height:40px;font-size:18px;}
+  }
+
+  @media print {
+    .search-box, .hot-tags, .search-results, .back-to-top, .disclaimer, footer { display: none !important; }
+    body { background: #fff !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Financial Planning, Simplified</div>
+    <h1>Retirement & Savings Tools</h1>
+    <p class="sub">Free, no-sign-up calculators to help you figure out how much to save, how your money grows, and when you can stop working.</p>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search tools... (try: 401k, emergency fund, compound interest)" oninput="doSearch()">
+    <button>Search</button>
+  </div>
+  <div class="search-results" id="search-results"></div>
+  <div class="hot-tags">
+    <span>Popular:</span>
+    <a href="401k-calculator.html">401(k)</a>
+    <a href="emergency-fund-calculator.html">Emergency Fund</a>
+    <a href="compound-interest-calculator.html">Compound Interest</a>
+    <a href="retirement-age-calculator.html">Retirement Age</a>
+  </div>
+
+  <div style="margin:32px -24px;">
+    <img src="assets/hero.jpg" alt="A calm desk with laptop, piggy bank, and coffee — financial planning at home" style="width:100%;height:auto;display:block;border-radius:12px;">
+  </div>
+
+  <section class="categories">
+    <h2>Choose Your Tool</h2>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></div>
+        <h3>Retirement Planning</h3>
+        <ul>
+          <li><a href="401k-calculator.html">401(k) Calculator</a></li>
+          <li><a href="ira-calculator.html">IRA Calculator</a></li>
+          <li><a href="retirement-age-calculator.html">Retirement Age Calculator</a></li>
+          <li><a href="social-security-calculator.html">Social Security Calculator</a></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></div>
+        <h3>Savings Basics</h3>
+        <ul>
+          <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+          <li><a href="savings-rate-calculator.html">Savings Rate Calculator</a></li>
+          <li><a href="emergency-fund-calculator.html">Emergency Fund Calculator</a></li>
+          <li><a href="net-worth-calculator.html">Net Worth Calculator</a></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14M7 7l-3 6a3.5 3.5 0 006 0L7 7zM17 7l-3 6a3.5 3.5 0 006 0L17 7z"/></svg></div>
+        <h3>Tax & Growth</h3>
+        <ul>
+          <li><a href="roth-vs-traditional-ira.html">Roth vs. Traditional IRA</a></li>
+          <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="guides">
+    <h2>Guides & Deep Dives</h2>
+    <a href="retirement-savings-by-age.html" class="guide-item">
+      <div><strong>How Much Should I Have Saved by Age?</strong><small>Simple retirement savings benchmarks by age 30, 40, 50</small></div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="emergency-fund-guide.html" class="guide-item">
+      <div><strong>How Much Emergency Fund Do I Need?</strong><small>The 3–6 month rule explained, with real examples</small></div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="is-401k-worth-it.html" class="guide-item">
+      <div><strong>Is a 401(k) Worth It?</strong><small>Pros & cons — when to max it out, when to skip it</small></div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="blog/2026-contribution-limits.html" class="guide-item">
+      <div><strong>2026 Retirement Contribution Limits</strong><small>401(k), IRA, HSA, and catch-up limits — the complete annual guide</small></div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="blog/what-is-fire.html" class="guide-item">
+      <div><strong>The Complete Beginner's Guide to FIRE</strong><small>Financial Independence, Retire Early — the math, the flavors, and how to start</small></div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="blog/maximize-social-security.html" class="guide-item">
+      <div><strong>How to Maximize Social Security</strong><small>When to claim, spousal benefits, and the break-even age explained</small></div>
+      <span class="arrow">→</span>
+    </a>
+  </section>
+
+  <div style="margin:32px -24px;">
+    <img src="assets/divider.jpg" alt="Warm desk illustration with plant, notebook, and piggy bank" style="width:100%;height:auto;display:block;border-radius:12px;">
+  </div>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        Are these calculators really free?
+        <span class="chev">▾</span>
+      </div>
+      <div class="faq-a">Yes, 100% free. No sign-up, no credit card, no trial period. Every calculator on this site runs entirely in your browser — there's no backend to pay for, so we don't charge you.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        Is my data safe? Do you store my inputs?
+        <span class="chev">▾</span>
+      </div>
+      <div class="faq-a">Yes, your data is completely private. All calculations happen in your browser using JavaScript — nothing you type is sent to or stored on our servers. You can disconnect from the internet and the calculators will still work.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        Do I need to register or create an account?
+        <span class="chev">▾</span>
+      </div>
+      <div class="faq-a">No. No account, no login, no email required. Just open the calculator, type in your numbers, and get your answer. We don't want your data — we just want to help you plan.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        Are these results accurate? Should I trust them?
+        <span class="chev">▾</span>
+      </div>
+      <div class="faq-a">These calculators use standard financial formulas and historically average assumptions (like 7% annual return, 3% inflation). They're excellent for planning and ballpark estimates, but they're not personalized financial advice. For major decisions, consult a qualified financial advisor.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        Can I use these on my phone?
+        <span class="chev">▾</span>
+      </div>
+      <div class="faq-a">Yes, the site is fully mobile-responsive. Open it in any phone browser and it'll automatically adjust to fit your screen. No app needed.</div>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>Why these tools exist</h2>
+    <p>Most people have no idea if they're saving enough for retirement. Financial advisors want 1% of your assets to tell you. Banks want to sell you products. We just want to give you clear, fast numbers — no login, no sales pitch, no catch.</p>
+    <p>Every calculator on this site is free, runs in your browser, and doesn't store your data. New tools are added regularly — bookmark this page and check back.</p>
+  </section>
+
+  <div class="disclaimer">
+    These calculators provide estimates for general guidance only and are not financial, tax, or investment advice. Actual returns, tax brackets, and benefit amounts depend on your personal situation, market performance, and future law changes. Always consult a qualified financial professional before making major decisions.
+  </div>
+
+  <footer>
+    <div>© Retirement & Savings Tools</div>
+    <div>
+      <a href="about.html">About</a> &nbsp;·&nbsp;
+      <a href="glossary.html">Glossary</a> &nbsp;·&nbsp;
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </footer>
+
+</div>
+
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Search functionality
+  var tools = [
+    {name:"401(k) Calculator", url:"401k-calculator.html", keywords:"401k 401k employer match retirement"},
+    {name:"IRA Calculator", url:"ira-calculator.html", keywords:"ira traditional roth retirement savings"},
+    {name:"Compound Interest Calculator", url:"compound-interest-calculator.html", keywords:"compound interest growth investing"},
+    {name:"Retirement Age Calculator", url:"retirement-age-calculator.html", keywords:"retire age when can i retire"},
+    {name:"Savings Rate Calculator", url:"savings-rate-calculator.html", keywords:"savings rate percent income"},
+    {name:"Emergency Fund Calculator", url:"emergency-fund-calculator.html", keywords:"emergency fund safety net savings"},
+    {name:"Inflation Calculator", url:"inflation-calculator.html", keywords:"inflation purchasing power money value"},
+    {name:"Social Security Calculator", url:"social-security-calculator.html", keywords:"social security benefit retirement age"},
+    {name:"Roth vs. Traditional IRA", url:"roth-vs-traditional-ira.html", keywords:"roth traditional ira compare tax"},
+    {name:"Net Worth Calculator", url:"net-worth-calculator.html", keywords:"net worth assets debts wealth"},
+    {name:"Retirement Savings by Age", url:"retirement-savings-by-age.html", keywords:"how much save by age 30 40 50"},
+    {name:"Emergency Fund Guide", url:"emergency-fund-guide.html", keywords:"how much emergency fund 3 6 months"},
+    {name:"Is 401(k) Worth It?", url:"is-401k-worth-it.html", keywords:"401k worth it pros cons"},
+    {name:"2026 Contribution Limits", url:"blog/2026-contribution-limits.html", keywords:"2026 contribution limit 401k ira"},
+    {name:"FIRE Guide", url:"blog/what-is-fire.html", keywords:"fire financial independence retire early"},
+    {name:"Maximize Social Security", url:"blog/maximize-social-security.html", keywords:"maximize social security benefit claim"}
+  ];
+
+  function doSearch(){
+    var input = document.getElementById('search-input').value.toLowerCase().trim();
+    var resultsDiv = document.getElementById('search-results');
+    if(input.length < 2){
+      resultsDiv.style.display = 'none';
+      return;
+    }
+    var matches = tools.filter(function(t){
+      return t.name.toLowerCase().indexOf(input) !== -1 || t.keywords.indexOf(input) !== -1;
+    });
+    if(matches.length === 0){
+      resultsDiv.innerHTML = '<div class="no-result">No tools found. Try "401k" or "emergency fund".</div>';
+    } else {
+      resultsDiv.innerHTML = matches.map(function(t){
+        return '<a href="'+t.url+'">'+t.name+'</a>';
+      }).join('');
+    }
+    resultsDiv.style.display = 'block';
+  }
+
+  // Hide search results when clicking outside
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.search-box') && !e.target.closest('.search-results')){
+      document.getElementById('search-results').style.display = 'none';
+    }
+  });
+
+  // Back to top button
+  var backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 400){
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+</script>
+
+</body>
+</html>

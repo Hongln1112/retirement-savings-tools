@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Security Calculator — Estimate Your Retirement Benefit</title>
+<meta name="description" content="Free Social Security calculator: estimate your monthly retirement benefit at age 62, full retirement age, or 70. See how delaying increases your check.">
+<link rel="canonical" href="https://retirement-savings-tools.vercel.app/social-security-calculator.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;--good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
+  .back{display:inline-block;font-size:13px;font-weight:500;color:var(--brand);text-decoration:none;margin-bottom:24px;}
+  .back:hover{text-decoration:underline;}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:12px;}
+  .sub{font-size:16px;color:var(--muted);max-width:560px;margin-bottom:32px;}
+  .card{background:#fff;border:1px solid var(--line);padding:28px;border-radius:4px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;letter-spacing:.02em;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);background:#fdfbf7;outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);}
+  .prefix{position:relative;}
+  .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .prefix .input{padding-left:32px;}
+  .btn{width:100%;padding:15px;font-size:15px;font-weight:600;color:#fff;background:var(--brand);border:none;cursor:pointer;margin-top:8px;letter-spacing:.02em;transition:background .15s;}
+  .btn:hover{background:var(--brand-dark);}
+  .result{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;}
+  .result .num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(36px,7vw,46px);font-weight:900;color:var(--good);line-height:1.1;margin-top:8px;}
+  .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .result-row:last-child{border-bottom:none;}
+  .result-row .label{color:var(--muted);}
+  .result-row .val{font-weight:600;}
+  .section{margin-top:48px;}
+  .section h2{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .section p{font-size:15px;color:#4a4035;margin-bottom:14px;}
+  .faq-item{border:1px solid var(--line);margin-bottom:8px;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;}
+  .faq-item.open .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a p{padding:0 18px 16px;font-size:14px;color:#4a4035;margin:0;}
+  .disclaimer{font-size:12px;color:#9a8e7d;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);line-height:1.7;}
+  @media (max-width:520px){.wrap{padding:32px 16px 48px;}.card{padding:20px 16px;}}
+
+  @media print {
+    .btn, .back, .faq-q .chev, #chart, .related-tools, .disclaimer { display: none !important; }
+    body { background: #fff !important; }
+    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+    .result { border-top: 2px solid #333 !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← All tools</a>
+  <h1>Social Security Calculator</h1>
+  <p class="sub">Estimate your monthly Social Security retirement benefit — and see how waiting to claim can dramatically increase your check.</p>
+  <p style="font-size:15px;color:#4a4035;margin-bottom:24px;max-width:640px;">
+Social Security is the backbone of retirement income for most Americans — but when you claim it makes a massive difference.
+This free Social Security calculator estimates your monthly benefit at age 62, full retirement age (67), and age 70.
+Delaying from 62 to 70 increases your benefit by about 76% — a guaranteed lifetime raise.
+See which claiming strategy gives you the most money over your lifetime.
+</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="income">Your estimated average annual income (career average)</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="income" type="number" min="0" step="any" placeholder="e.g. 70000"></div>
+      <div class="hint">Rough average of your annual earnings over your 35 highest-earning years.</div>
+    </div>
+    <div class="field">
+      <label for="age">When do you want to start claiming?</label>
+      <select class="input" id="age">
+        <option value="62">Age 62 (early — reduced benefit)</option>
+        <option value="67" selected>Age 67 (full retirement age)</option>
+        <option value="70">Age 70 (delayed — maximum benefit)</option>
+      </select>
+    </div>
+    <button class="btn" onclick="calc()">Estimate My Benefit</button>
+
+    <div class="result hidden" id="result">
+      <div class="big">Estimated monthly benefit at age <span id="r-age">67</span></div>
+      <div class="num" id="benefit">$0</div>
+      <div style="margin-top:24px;">
+        <div class="result-row"><span class="label">At age 62</span><span class="val" id="b62">$0/mo</span></div>
+        <div class="result-row"><span class="label">At full retirement age (67)</span><span class="val" id="b67">$0/mo</span></div>
+        <div class="result-row"><span class="label">At age 70</span><span class="val" id="b70">$0/mo</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>When should you claim Social Security?</h2>
+    <p>You can start as early as <strong>age 62</strong>, but your benefit is permanently reduced by about 30%. Wait until <strong>age 70</strong>, and your check grows by about 8% per year of delay.</p>
+    <p>If you expect to live into your 80s or 90s, delaying to 70 usually pays off. If you have health concerns or need the money now, claiming at 62 makes sense.</p>
+  </div>
+
+  
+  <div class="section">
+    <h2>Common Mistakes to Avoid</h2>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Claiming at 62 'because I can'</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">Your benefit is permanently reduced by about 30% if you claim at 62. If you live past your mid-80s, waiting until 70 pays off significantly.</p>
+    </div>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Forgetting spousal benefits</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">A non-working spouse can claim up to 50% of the working spouse's benefit. If you're married, coordinate your claiming strategy.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <button class="faq-q">Is Social Security going to run out? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>The trust fund is projected to be depleted around 2034, after which incoming payroll taxes would cover about 77% of scheduled benefits. Congress will likely adjust the program, but plan conservatively.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I work and collect Social Security? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Yes, but if you're under full retirement age and earn above a limit ($22,320 in 2024), your benefit is temporarily reduced. Once you reach FRA, there's no limit.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Do my spouses benefits count? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>A spouse can claim up to 50% of your benefit, even if they never worked. Survivor benefits are also available. For married couples, timing both benefits strategically matters.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+  <h2>Related Tools</h2>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="retirement-age-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Retirement Age Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">See how Social Security fits your overall plan</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="401k-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">401(k) Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Build savings on top of your benefits</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="inflation-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Inflation Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Benefits adjust for inflation — see how much</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+</div>
+
+  <div class="disclaimer">
+    This calculator provides rough estimates for general guidance only. Actual Social Security benefits are based on your exact earnings record. For your personalized number, create a free account at ssa.gov.
+  </div>
+</div>
+
+<script>
+function calc(){
+  var income=parseFloat(document.getElementById('income').value)||0;
+  var age=parseInt(document.getElementById('age').value)||67;
+  // Rough PIA estimate: bend points simplified
+  var pia=Math.min(income*0.42, 2200); // rough estimate
+  var b62=Math.round(pia*0.7);
+  var b67=Math.round(pia);
+  var b70=Math.round(pia*1.24);
+  var chosen=age===62?b62:age===67?b67:b70;
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('r-age').textContent=age;
+  document.getElementById('benefit').textContent='$'+chosen.toLocaleString('en-US')+'/mo';
+  document.getElementById('b62').textContent='$'+b62.toLocaleString('en-US')+'/mo';
+  document.getElementById('b67').textContent='$'+b67.toLocaleString('en-US')+'/mo';
+  document.getElementById('b70').textContent='$'+b70.toLocaleString('en-US')+'/mo';
+}
+document.querySelectorAll('.faq-q').forEach(function(q){
+  q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+          "@type": "Question",
+          "name": "Is Social Security going to run out?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The trust fund is projected to be depleted around 2034, after which incoming payroll taxes would cover about 77% of scheduled benefits. Congress will likely adjust the program, but plan conservatively."
+          }
+        },{
+          "@type": "Question",
+          "name": "Can I work and collect Social Security?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, but if you're under full retirement age and earn above a limit ($22,320 in 2024), your benefit is temporarily reduced. Once you reach FRA, there's no limit."
+          }
+        },{
+          "@type": "Question",
+          "name": "Do my spouses benefits count?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A spouse can claim up to 50% of your benefit, even if they never worked. Survivor benefits are also available. For married couples, timing both benefits strategically matters."
+          }
+        }]
+}
+</script>
+</body>
+</html>

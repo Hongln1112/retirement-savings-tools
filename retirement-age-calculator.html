@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retirement Age Calculator — When Can You Actually Retire?</title>
+<meta name="description" content="Free retirement age calculator: find out exactly when you can stop working based on your current savings, monthly spending, and expected investment returns.">
+<link rel="canonical" href="https://retirement-savings-tools.vercel.app/retirement-age-calculator.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;
+    --good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
+  .back{display:inline-block;font-size:13px;font-weight:500;color:var(--brand);text-decoration:none;margin-bottom:24px;}
+  .back:hover{text-decoration:underline;}
+  h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(28px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:12px;
+  }
+  .sub{font-size:16px;color:var(--muted);max-width:560px;margin-bottom:32px;}
+  .card{background:#fff;border:1px solid var(--line);padding:28px;border-radius:4px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;letter-spacing:.02em;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);background:#fdfbf7;outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);}
+  .prefix{position:relative;}
+  .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .prefix .input{padding-left:32px;}
+  .suffix{position:relative;}
+  .suffix .sign{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .suffix .input{padding-right:36px;}
+  .btn{width:100%;padding:15px;font-size:15px;font-weight:600;color:#fff;background:var(--brand);border:none;cursor:pointer;margin-top:8px;letter-spacing:.02em;transition:background .15s;}
+  .btn:hover{background:var(--brand-dark);}
+  .result{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;}
+  .result .num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(40px,8vw,52px);font-weight:900;color:var(--good);line-height:1.1;margin-top:8px;}
+  .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .result-row:last-child{border-bottom:none;}
+  .result-row .label{color:var(--muted);}
+  .result-row .val{font-weight:600;}
+  .section{margin-top:48px;}
+  .section h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:22px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);
+  }
+  .section p{font-size:15px;color:#4a4035;margin-bottom:14px;}
+  .faq-item{border:1px solid var(--line);margin-bottom:8px;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;}
+  .faq-item.open .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a p{padding:0 18px 16px;font-size:14px;color:#4a4035;margin:0;}
+  .disclaimer{font-size:12px;color:#9a8e7d;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);line-height:1.7;}
+  @media (max-width:520px){.wrap{padding:32px 16px 48px;}.card{padding:20px 16px;}}
+
+  @media print {
+    .btn, .back, .faq-q .chev, #chart, .related-tools, .disclaimer { display: none !important; }
+    body { background: #fff !important; }
+    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+    .result { border-top: 2px solid #333 !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← All tools</a>
+  <h1>Retirement Age Calculator</h1>
+  <p class="sub">Find out exactly when you can stop working based on your savings, spending needs, and investment growth.</p>
+  <p style="font-size:15px;color:#4a4035;margin-bottom:24px;max-width:640px;">
+When can you actually stop working? It's not as simple as "age 65." This free retirement age calculator
+factors in your current savings, monthly contributions, desired retirement spending, and expected investment returns
+to project the exact age you'll reach financial independence. Using the classic 4% withdrawal rule,
+you'll see how your savings, spending rate, and investment growth interact to determine your retirement date.
+</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="current">Current age</label>
+      <input class="input" id="current" type="number" min="18" max="80" placeholder="e.g. 35" value="35">
+    </div>
+    <div class="field">
+      <label for="savings">Current retirement savings</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="savings" type="number" min="0" step="any" placeholder="e.g. 50000"></div>
+    </div>
+    <div class="field">
+      <label for="monthly">Monthly savings contribution</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="monthly" type="number" min="0" step="any" placeholder="e.g. 500" value="500"></div>
+    </div>
+    <div class="field">
+      <label for="spending">Desired annual retirement spending</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="spending" type="number" min="0" step="any" placeholder="e.g. 60000"></div>
+    </div>
+    <div class="field">
+      <label for="return">Expected annual return</label>
+      <div class="suffix"><span class="sign">%</span><input class="input" id="return" type="number" min="0" step="any" placeholder="e.g. 7" value="7"></div>
+    </div>
+    <button class="btn" onclick="calc()">Calculate My Retirement Age</button>
+
+    <div class="result hidden" id="result">
+      <div class="big">You can retire at age</div>
+      <div class="num" id="ret-age">0</div>
+      <div style="margin-top:24px;">
+        <div class="result-row"><span class="label">Years until retirement</span><span class="val" id="years-left">0</span></div>
+        <div class="result-row"><span class="label">Projected savings at retirement</span><span class="val" id="final-savings">$0</span></div>
+        <div class="result-row"><span class="label">4% withdrawal gives you</span><span class="val" id="monthly-income">$0/mo</span></div>
+      </div>
+      <div id="chart" style="width:100%;height:300px;margin-top:24px;"></div>
+      <button class="btn" style="margin-top:16px;background:var(--ink);" onclick="saveScenarioA()">Save as Scenario A</button>
+    </div>
+
+    <div class="compare-panel hidden" id="compare-panel" style="margin-top:24px;border-top:2px solid var(--line-dark);padding-top:20px;">
+      <div class="big" style="margin-bottom:16px;">Scenario Comparison</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="padding:16px;background:#fdfbf7;border:1px solid var(--line);">
+          <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Scenario A</div>
+          <div id="compare-a" style="font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:700;color:var(--brand);"></div>
+        </div>
+        <div style="padding:16px;background:#fdfbf7;border:1px solid var(--line);">
+          <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Scenario B (current)</div>
+          <div id="compare-b" style="font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:700;color:var(--good);"></div>
+        </div>
+      </div>
+      <div id="compare-diff" style="margin-top:12px;font-size:14px;color:var(--muted);"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The 4% rule explained</h2>
+    <p>The most common rule of thumb: withdraw 4% of your savings in the first year of retirement, then adjust for inflation. This gives you about a 95% chance of your money lasting 30 years.</p>
+    <p>That means you need roughly <strong>25× your annual spending</strong> saved up before you can retire. Want $60,000 a year? You need $1.5 million.</p>
+  </div>
+
+  
+  <div class="section">
+    <h2>Common Mistakes to Avoid</h2>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Underestimating healthcare costs</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">Healthcare is the biggest wild card in retirement. Fidelity estimates a 65-year-old couple needs $300,000+ in healthcare costs alone. Plan for it.</p>
+    </div>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Planning for 20 years, living 30</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">If you retire at 62 and live to 90, that's 28 years. The 4% rule is designed for a 30-year retirement horizon — don't cut it close.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <button class="faq-q">Can I retire early? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Yes, if your savings rate is high enough. The FIRE movement (Financial Independence, Retire Early) targets saving 50%+ of your income, which can get you to retirement in your 40s or even 30s.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What about Social Security? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Social Security kicks in at 62 at the earliest, but your benefit is reduced if you take it before full retirement age (66–67). Many early retirees bridge the gap between their savings running out and Social Security starting.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Is the 4% rule still valid? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>It's based on US market data from 1926 onward. In low-return environments, some advisors suggest 3–3.5% instead. Use it as a starting point, not a guarantee.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+  <h2>Related Tools</h2>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="social-security-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Social Security Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Estimate your monthly benefit — it bridges the gap</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="savings-rate-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Savings Rate Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Find out how much you need to save to retire on time</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="emergency-fund-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Emergency Fund Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Make sure your safety net is solid first</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+</div>
+
+  <div class="disclaimer">
+    This calculator provides estimates for general guidance only and is not financial advice. Actual outcomes depend on market returns, inflation, healthcare costs, and your lifespan. Always consult a qualified financial planner.
+  </div>
+</div>
+
+<script>
+  var scenarioA = null;
+
+function calc(){
+  var current=parseInt(document.getElementById('current').value)||35;
+  var savings=parseFloat(document.getElementById('savings').value)||0;
+  var monthly=parseFloat(document.getElementById('monthly').value)||0;
+  var spending=parseFloat(document.getElementById('spending').value)||60000;
+  var ret=parseFloat(document.getElementById('return').value)||7;
+  var target=spending*25;
+  var r=ret/100/12;
+  var balance=savings;
+  var years=0;
+  while(balance<target && years<60){
+    if(r===0){ balance+=monthly*12; }
+    else { balance=balance*(1+r*12)+monthly*12; }
+    years++;
+  }
+  var retAge=current+years;
+  var monthlyIncome=(target*0.04)/12;
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('ret-age').textContent=retAge;
+  document.getElementById('years-left').textContent=years+' years';
+  document.getElementById('final-savings').textContent='$'+Math.round(balance).toLocaleString('en-US');
+  document.getElementById('monthly-income').textContent='$'+Math.round(monthlyIncome).toLocaleString('en-US')+'/mo';
+
+  if(scenarioA !== null){
+    document.getElementById('compare-panel').classList.remove('hidden');
+    document.getElementById('compare-a').textContent='Age '+scenarioA;
+    document.getElementById('compare-b').textContent='Age '+retAge;
+    var diff = retAge - scenarioA;
+    var sign = diff >= 0 ? '+' : '';
+    var txt = diff === 0 ? 'Same retirement age' : 'You can retire ' + sign + Math.abs(diff) + (Math.abs(diff)===1?' year':' years') + (diff >= 0 ? ' later' : ' earlier');
+    document.getElementById('compare-diff').innerHTML = txt;
+  }
+
+  var yearsArr=[],balanceArr=[],targetArr=[];
+  var b=savings;
+  for(var y=0;y<=years;y++){
+    yearsArr.push('Age '+(current+y));
+    balanceArr.push(Math.round(b));
+    targetArr.push(target);
+    if(r===0){ b+=monthly*12; }
+    else { b=b*(1+r*12)+monthly*12; }
+  }
+  var chart=echarts.init(document.getElementById('chart'));
+  chart.setOption({
+    grid:{left:70,right:20,top:20,bottom:30},
+    xAxis:{type:'category',data:yearsArr,axisLabel:{color:'#7a6e5d',fontSize:11},axisLine:{lineStyle:{color:'#e8dfd0'}}},
+    yAxis:{type:'value',axisLabel:{color:'#7a6e5d',fontSize:11,formatter:function(v){return '$'+(v/1000)+'k';}},splitLine:{lineStyle:{color:'#f0e8da'}}},
+    series:[
+      {name:'Your savings',data:balanceArr,type:'line',smooth:true,symbol:'none',lineStyle:{color:'#8b6914',width:2.5},areaStyle:{color:'rgba(139,105,20,0.12)'}},
+      {name:'Retirement target',data:targetArr,type:'line',symbol:'none',lineStyle:{color:'#b04a3a',width:2,type:'dashed'}}
+    ],
+    tooltip:{trigger:'axis',valueFormatter:function(v){return '$'+v.toLocaleString();}},
+    legend:{data:['Your savings','Retirement target'],textStyle:{color:'#7a6e5d',fontSize:12},bottom:0}
+  });
+}
+
+function saveScenarioA(){
+  var ageEl = document.getElementById('ret-age').textContent;
+  var val = parseInt(ageEl);
+  scenarioA = val;
+  document.getElementById('compare-panel').classList.remove('hidden');
+  document.getElementById('compare-a').textContent='Age '+val;
+  document.getElementById('compare-b').textContent='Age '+val;
+  document.getElementById('compare-diff').innerHTML='Now change your inputs and recalculate to see the difference.';
+}
+document.querySelectorAll('.faq-q').forEach(function(q){
+  q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+          "@type": "Question",
+          "name": "Can I retire early?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, if your savings rate is high enough. The FIRE movement (Financial Independence, Retire Early) targets saving 50%+ of your income, which can get you to retirement in your 40s or even 30s."
+          }
+        },{
+          "@type": "Question",
+          "name": "What about Social Security?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Social Security kicks in at 62 at the earliest, but your benefit is reduced if you take it before full retirement age (66–67). Many early retirees bridge the gap between their savings running out and Social Security starting."
+          }
+        },{
+          "@type": "Question",
+          "name": "Is the 4% rule still valid?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It's based on US market data from 1926 onward. In low-return environments, some advisors suggest 3–3.5% instead. Use it as a starting point, not a guarantee."
+          }
+        }]
+}
+</script>
+</body>
+</html>

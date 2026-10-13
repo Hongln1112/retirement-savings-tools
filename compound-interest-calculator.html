@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compound Interest Calculator — Watch Your Money Grow</title>
+<meta name="description" content="Free compound interest calculator: see how small regular contributions grow into a fortune over decades through the magic of compounding.">
+<link rel="canonical" href="https://retirement-savings-tools.vercel.app/compound-interest-calculator.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root{--bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;--good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
+  .back{display:inline-block;font-size:13px;font-weight:500;color:var(--brand);text-decoration:none;margin-bottom:24px;}
+  .back:hover{text-decoration:underline;}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:12px;}
+  .sub{font-size:16px;color:var(--muted);max-width:560px;margin-bottom:32px;}
+  .card{background:#fff;border:1px solid var(--line);padding:28px;border-radius:4px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;letter-spacing:.02em;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);background:#fdfbf7;outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);}
+  .prefix{position:relative;}
+  .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .prefix .input{padding-left:32px;}
+  .suffix{position:relative;}
+  .suffix .sign{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .suffix .input{padding-right:36px;}
+  .btn{width:100%;padding:15px;font-size:15px;font-weight:600;color:#fff;background:var(--brand);border:none;cursor:pointer;margin-top:8px;}
+  .btn:hover{background:var(--brand-dark);}
+  .result{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;}
+  .result .num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(40px,8vw,52px);font-weight:900;color:var(--good);line-height:1.1;margin-top:8px;}
+  .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .result-row:last-child{border-bottom:none;}
+  .result-row .label{color:var(--muted);}
+  .result-row .val{font-weight:600;}
+  .section{margin-top:48px;}
+  .section h2{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+  .section p{font-size:15px;color:#4a4035;margin-bottom:14px;}
+  .faq-item{border:1px solid var(--line);margin-bottom:8px;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;}
+  .faq-item.open .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a p{padding:0 18px 16px;font-size:14px;color:#4a4035;margin:0;}
+  .disclaimer{font-size:12px;color:#9a8e7d;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);line-height:1.7;}
+  @media (max-width:520px){.wrap{padding:32px 16px 48px;}.card{padding:20px 16px;}}
+
+  @media print {
+    .btn, .back, .faq-q .chev, #chart, .related-tools, .disclaimer { display: none !important; }
+    body { background: #fff !important; }
+    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+    .result { border-top: 2px solid #333 !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← All tools</a>
+  <h1>Compound Interest Calculator</h1>
+  <p class="sub">The eighth wonder of the world: watch how small regular contributions grow into a fortune over decades.</p>
+  <p style="font-size:15px;color:#4a4035;margin-bottom:24px;max-width:640px;">
+Compound interest is the force that turns small, regular savings into life-changing wealth over time.
+This free calculator shows exactly how your money grows when interest earns interest — year after year.
+Whether you're investing in a 401(k), IRA, or brokerage account, understanding the power of compounding
+will keep you motivated to start early and contribute consistently. Time in the market beats timing the market.
+</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="principal">Initial principal</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="principal" type="number" min="0" step="any" placeholder="e.g. 1000" value="1000"></div>
+    </div>
+    <div class="field">
+      <label for="monthly">Monthly contribution</label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="monthly" type="number" min="0" step="any" placeholder="e.g. 200" value="200"></div>
+    </div>
+    <div class="field">
+      <label for="rate">Annual interest rate</label>
+      <div class="suffix"><span class="sign">%</span><input class="input" id="rate" type="number" min="0" step="any" placeholder="e.g. 7" value="7"></div>
+    </div>
+    <div class="field">
+      <label for="years">Years</label>
+      <input class="input" id="years" type="number" min="0" max="60" placeholder="e.g. 30" value="30">
+    </div>
+    <button class="btn" onclick="calc()">Calculate Growth</button>
+
+    <div class="result hidden" id="result">
+      <div class="big">Future value</div>
+      <div class="num" id="total">$0</div>
+      <div style="margin-top:24px;">
+        <div class="result-row"><span class="label">Total contributions</span><span class="val" id="contrib">$0</span></div>
+        <div class="result-row"><span class="label">Interest earned</span><span class="val" id="interest">$0</span></div>
+      </div>
+      <div id="chart" style="width:100%;height:300px;margin-top:24px;"></div>
+      <button class="btn" style="margin-top:16px;background:var(--ink);" onclick="saveScenarioA()">Save as Scenario A</button>
+    </div>
+
+    <div class="compare-panel hidden" id="compare-panel" style="margin-top:24px;border-top:2px solid var(--line-dark);padding-top:20px;">
+      <div class="big" style="margin-bottom:16px;">Scenario Comparison</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="padding:16px;background:#fdfbf7;border:1px solid var(--line);">
+          <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Scenario A</div>
+          <div id="compare-a" style="font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:700;color:var(--brand);"></div>
+        </div>
+        <div style="padding:16px;background:#fdfbf7;border:1px solid var(--line);">
+          <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Scenario B (current)</div>
+          <div id="compare-b" style="font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:700;color:var(--good);"></div>
+        </div>
+      </div>
+      <div id="compare-diff" style="margin-top:12px;font-size:14px;color:var(--muted);"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Why compound interest is powerful</h2>
+    <p>Einstein called it the "eighth wonder of the world." The longer you let money grow, the faster it accelerates — because your interest starts earning interest. The last 10 years of a 30-year plan often produce more growth than the first 20 combined.</p>
+  </div>
+
+  
+  <div class="section">
+    <h2>Common Mistakes to Avoid</h2>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Waiting to start</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">Someone who invests $200/month from age 25 to 35 (10 years) ends up with more at 65 than someone who invests $200/month from 35 to 65 (30 years). Time beats amount.</p>
+    </div>
+    <div style="margin-bottom:16px;padding-left:16px;border-left:3px solid var(--bad);">
+      <strong style="font-size:15px;">Chasing high returns</strong>
+      <p style="font-size:14px;color:#4a4035;margin-top:4px;">Chasing the hot stock or crypto of the month usually backfires. Consistent contributions to low-cost index funds over decades beat market timing.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <button class="faq-q">What's a realistic average return? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>The S&P 500 has averaged about 10% annually over the last 100 years (before inflation). Use 7% as a conservative long-term estimate for a balanced portfolio.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Does compound interest work against me? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Yes — on debt. Credit card interest compounds the same way, which is why carrying a balance is so expensive. Paying off high-interest debt is the highest-return investment you can make.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">When does compounding really kick in? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Mathematically, immediately — but visually, around year 15–20. The curve stays flat at first, then curves up sharply. Most people quit too early and miss the payoff.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+  <h2>Related Tools</h2>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="401k-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">401(k) Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">See compounding in action with your employer plan</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="ira-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">IRA Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Project your IRA growth with compound returns</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="inflation-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Inflation Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Don't forget to account for inflation eroding your gains</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+</div>
+
+  <div class="disclaimer">
+    This calculator provides estimates for general guidance only. Actual returns vary and are not guaranteed. Past performance does not predict future results.
+  </div>
+</div>
+
+<script>
+  var scenarioA = null;
+
+function calc(){
+  var principal=parseFloat(document.getElementById('principal').value)||0;
+  var monthly=parseFloat(document.getElementById('monthly').value)||0;
+  var rate=parseFloat(document.getElementById('rate').value)||0;
+  var years=parseFloat(document.getElementById('years').value)||0;
+  var r=rate/100/12;
+  var n=years*12;
+  var future;
+  if(r===0){ future=principal+monthly*n; }
+  else { future=principal*Math.pow(1+r,n)+monthly*((Math.pow(1+r,n)-1)/r); }
+  var totalContrib=principal+monthly*n;
+  var interest=future-totalContrib;
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('total').textContent='$'+Math.round(future).toLocaleString('en-US');
+  document.getElementById('contrib').textContent='$'+Math.round(totalContrib).toLocaleString('en-US');
+  document.getElementById('interest').textContent='$'+Math.round(interest).toLocaleString('en-US');
+
+  if(scenarioA !== null){
+    document.getElementById('compare-panel').classList.remove('hidden');
+    document.getElementById('compare-a').textContent='$'+Math.round(scenarioA).toLocaleString('en-US');
+    document.getElementById('compare-b').textContent='$'+Math.round(future).toLocaleString('en-US');
+    var diff = future - scenarioA;
+    var pct = scenarioA > 0 ? Math.round(diff/scenarioA*100) : 0;
+    var sign = diff >= 0 ? '+' : '';
+    document.getElementById('compare-diff').innerHTML = 'Difference: <strong style="color:'+(diff>=0?'var(--good)':'var(--bad)')+'">'+sign+'$'+Math.round(Math.abs(diff)).toLocaleString('en-US')+' ('+sign+pct+'%)</strong>';
+  }
+
+  var yearsArr=[],balanceArr=[];
+  var b=principal;
+  for(var y=0;y<=years;y++){
+    yearsArr.push('Year '+y);
+    balanceArr.push(Math.round(b));
+    if(r===0){ b+=monthly*12; }
+    else { b=b*(1+r*12)+monthly*12; }
+  }
+  var chart=echarts.init(document.getElementById('chart'));
+  chart.setOption({
+    grid:{left:60,right:20,top:20,bottom:30},
+    xAxis:{type:'category',data:yearsArr,axisLabel:{color:'#7a6e5d',fontSize:11},axisLine:{lineStyle:{color:'#e8dfd0'}}},
+    yAxis:{type:'value',axisLabel:{color:'#7a6e5d',fontSize:11,formatter:function(v){return '$'+(v/1000)+'k';}},splitLine:{lineStyle:{color:'#f0e8da'}}},
+    series:[{data:balanceArr,type:'line',smooth:true,symbol:'none',lineStyle:{color:'#8b6914',width:2.5},areaStyle:{color:'rgba(139,105,20,0.12)'}}],
+    tooltip:{trigger:'axis',valueFormatter:function(v){return '$'+v.toLocaleString();}}
+  });
+}
+
+function saveScenarioA(){
+  var totalEl = document.getElementById('total').textContent;
+  var val = parseFloat(totalEl.replace(/[^0-9.]/g,''));
+  scenarioA = val;
+  document.getElementById('compare-panel').classList.remove('hidden');
+  document.getElementById('compare-a').textContent=totalEl;
+  document.getElementById('compare-b').textContent=totalEl;
+  document.getElementById('compare-diff').innerHTML='Now change your inputs and recalculate to see the difference.';
+}
+document.querySelectorAll('.faq-q').forEach(function(q){
+  q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+          "@type": "Question",
+          "name": "What's a realistic average return?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The S&P 500 has averaged about 10% annually over the last 100 years (before inflation). Use 7% as a conservative long-term estimate for a balanced portfolio."
+          }
+        },{
+          "@type": "Question",
+          "name": "Does compound interest work against me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — on debt. Credit card interest compounds the same way, which is why carrying a balance is so expensive. Paying off high-interest debt is the highest-return investment you can make."
+          }
+        },{
+          "@type": "Question",
+          "name": "When does compounding really kick in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mathematically, immediately — but visually, around year 15–20. The curve stays flat at first, then curves up sharply. Most people quit too early and miss the payoff."
+          }
+        }]
+}
+</script>
+</body>
+</html>
