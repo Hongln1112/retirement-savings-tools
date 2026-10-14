@@ -3,45 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — Retirement & Savings Tools</title>
+<title>Privacy Policy | Retirement Savings Tools</title>
+<meta name="description" content="Privacy policy for Retirement Savings Tools — how we handle data, cookies, and advertising.">
 <link rel="canonical" href="https://retirement-savings-tools.vercel.app/privacy.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--line:#e8dfd0;}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;}
-  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
-  .back{display:inline-block;font-size:13px;font-weight:500;color:var(--brand);text-decoration:none;margin-bottom:24px;}
-  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4vw,38px);font-weight:900;margin-bottom:20px;}
-  h2{font-family:'Playfair Display',Georgia,serif;font-size:20px;margin:24px 0 12px;}
-  p{font-size:15px;color:#4a4035;margin-bottom:14px;}
-
-  @media print {
-    .btn, .back, .faq-q .chev, #chart, .related-tools, .disclaimer { display: none !important; }
-    body { background: #fff !important; }
-    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
-    .result { border-top: 2px solid #333 !important; }
+  :root{
+    --bg:#FAF6F0;--card:#ffffff;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;
+    --good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;--navy:#2c2418;
   }
-
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  nav{background:var(--navy);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{color:#FAF6F0;font-weight:700;font-size:15px;letter-spacing:-.2px;text-decoration:none;display:flex;align-items:center;gap:8px;font-family:'Playfair Display',Georgia,serif;}
+  .nav-brand svg{width:22px;height:22px;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:#a89f8f;text-decoration:none;font-size:14px;font-weight:500;transition:color .15s;}
+  .nav-links a:hover{color:#FAF6F0;}
+  .wrap{max-width:800px;margin:0 auto;padding:48px 24px 64px;}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4vw,38px);font-weight:900;letter-spacing:-.5px;margin-bottom:8px;}
+  .updated{font-size:13px;color:var(--muted);margin-bottom:32px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:20px;}
+  .card h2{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;margin-bottom:12px;}
+  .card p{font-size:15px;color:#4a4035;margin-bottom:12px;}
+  .card ul{font-size:15px;color:#4a4035;margin-left:20px;margin-bottom:12px;}
+  .card li{margin-bottom:6px;}
+  a{color:var(--brand);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;}
+  footer .foot-links{margin-bottom:8px;}
+  footer .foot-links a{color:var(--muted);text-decoration:none;font-size:13px;margin:0 12px;}
+  footer .copyright{font-size:12px;color:var(--muted);}
+  @media (max-width:640px){.nav-links{display:none;}.wrap{padding:32px 16px 48px;}}
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Retirement Savings Tools
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Calculators</a>
+      <a href="guides.html">Guides</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
-  <a class="back" href="index.html">← Home</a>
+
   <h1>Privacy Policy</h1>
-  <p>Last updated: October 12, 2026</p>
+  <p class="updated">Last updated: October 14, 2026</p>
 
-  <h2>What we collect</h2>
-  <p>We don't collect personal data. All calculator inputs run entirely in your browser — nothing is sent to or stored on our servers.</p>
+  <div class="card">
+    <h2>Overview</h2>
+    <p>We believe your financial details are your business. Retirement Savings Tools is built to work entirely in your browser, so we don't collect the numbers you enter into our calculators. This policy explains what data we do (and don't) handle, how third-party services such as advertising networks may use cookies, and your rights under applicable privacy laws.</p>
+  </div>
 
-  <h2>Cookies & analytics</h2>
-  <p>We may use anonymous, aggregated analytics to understand which tools are most used. This data cannot identify you personally. We do not sell or share your information.</p>
+  <div class="card">
+    <h2>What we collect</h2>
+    <ul>
+      <li><strong>Calculation inputs:</strong> never stored, transmitted, or logged. They stay on your device and are processed entirely by your browser.</li>
+      <li><strong>Personal information:</strong> we don't ask for or collect any — no accounts, no sign-ups, no email capture.</li>
+      <li><strong>Server logs:</strong> like most websites, our hosting provider may keep standard server logs (such as IP address, browser type, pages visited, and timestamps) for security and performance. We do not use these to identify you individually.</li>
+      <li><strong>Our own cookies:</strong> this site does not set its own tracking cookies.</li>
+    </ul>
+  </div>
 
-  <h2>Advertising</h2>
-  <p>This site may display advertising through Google AdSense. Google uses cookies to serve ads based on your prior visits to this and other websites. You can opt out of personalized advertising by visiting Google Ads Settings.</p>
+  <div class="card">
+    <h2>Cookies and advertising</h2>
+    <p>This site uses <strong>Google AdSense</strong>, a third-party advertising service provided by Google LLC. Google, as a third-party vendor, uses cookies to serve ads on this site. These cookies enable Google and its partners to serve ads based on your prior visits to this or other websites, and to measure ad performance.</p>
+    <p><strong>How to opt out:</strong> You can opt out of Google's use of cookies for personalized advertising by visiting <a href="https://www.google.com/settings/ads" rel="nofollow noopener">Google's Ads Settings</a>. You can also opt out of many third-party vendors' use of cookies for personalized advertising at <a href="https://www.aboutads.info" rel="nofollow noopener">www.aboutads.info</a>. Note that opting out does not stop ads entirely — you may still see contextual (non-personalized) ads.</p>
+  </div>
 
-  <h2>Contact</h2>
-  <p>Questions about this policy? Email hongln19951112@gmail.com.</p>
+  <div class="card">
+    <h2>GDPR and CCPA</h2>
+    <p>If you are located in the European Economic Area (EEA) or California, you have certain data protection rights. Under the General Data Protection Regulation (GDPR), you may have the right to access, correct, or delete personal data we hold about you. Under the California Consumer Privacy Act (CCPA), California residents have the right to know what personal information is collected, to opt out of the sale of personal information, and to request deletion.</p>
+    <p>Since this site does not collect personal data directly, these rights largely apply to data collected by our third-party advertising partners. You can manage your ad preferences directly through Google's Ads Settings linked above.</p>
+  </div>
+
+  <div class="card">
+    <h2>Children's privacy</h2>
+    <p>This site is intended for a general audience and is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us and we will delete it promptly.</p>
+  </div>
+
+  <div class="card">
+    <h2>Data retention</h2>
+    <p>Since we do not collect personal data from visitors, there is no personal data for us to retain. Standard server logs are kept by our hosting provider for up to 30 days for security and performance purposes, after which they are automatically deleted.</p>
+  </div>
+
+  <div class="card">
+    <h2>External links</h2>
+    <p>Pages on this site may link to external websites (for example, government agencies or third-party services). We are not responsible for the content or privacy practices of those sites, and we encourage you to review their privacy policies.</p>
+  </div>
+
+  <div class="card">
+    <h2>Policy changes</h2>
+    <p>We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date. We encourage you to check this page periodically for any changes.</p>
+  </div>
+
+  <div class="card">
+    <h2>Contact</h2>
+    <p>If you have questions about this privacy policy or this site, please <a href="contact.html">contact us</a> or email us at <a href="mailto:hongln19951112@gmail.com">hongln19951112@gmail.com</a>.</p>
+  </div>
+
 </div>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="copyright">© 2026 Retirement Savings Tools</div>
+</footer>
+
 </body>
 </html>

@@ -3,40 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Retirement & Savings Tools</title>
+<title>About Us | Retirement Savings Tools</title>
+<meta name="description" content="About Retirement Savings Tools — free, browser-based retirement and savings calculators with clear guides.">
 <link rel="canonical" href="https://retirement-savings-tools.vercel.app/about.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--line:#e8dfd0;}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;}
-  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
-  .back{display:inline-block;font-size:13px;font-weight:500;color:var(--brand);text-decoration:none;margin-bottom:24px;}
-  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4vw,38px);font-weight:900;margin-bottom:20px;}
-  p{font-size:15px;color:#4a4035;margin-bottom:16px;}
-  .contact{background:#fff;border:1px solid var(--line);padding:24px;margin-top:24px;}
-  .contact h2{font-family:'Playfair Display',Georgia,serif;font-size:20px;margin-bottom:12px;}
-
-  @media print {
-    .btn, .back, .faq-q .chev, #chart, .related-tools, .disclaimer { display: none !important; }
-    body { background: #fff !important; }
-    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
-    .result { border-top: 2px solid #333 !important; }
+  :root{
+    --bg:#FAF6F0;--card:#ffffff;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;
+    --good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;--navy:#2c2418;
   }
-
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  nav{background:var(--navy);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{color:#FAF6F0;font-weight:700;font-size:15px;letter-spacing:-.2px;text-decoration:none;display:flex;align-items:center;gap:8px;font-family:'Playfair Display',Georgia,serif;}
+  .nav-brand svg{width:22px;height:22px;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:#a89f8f;text-decoration:none;font-size:14px;font-weight:500;transition:color .15s;}
+  .nav-links a:hover{color:#FAF6F0;}
+  .wrap{max-width:800px;margin:0 auto;padding:48px 24px 64px;}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4vw,38px);font-weight:900;letter-spacing:-.5px;margin-bottom:16px;}
+  .lead{font-size:16px;color:var(--muted);margin-bottom:32px;max-width:640px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:20px;}
+  .card h2{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:700;margin-bottom:12px;}
+  .card p{font-size:15px;color:#4a4035;margin-bottom:12px;}
+  .card ul{font-size:15px;color:#4a4035;margin-left:20px;margin-bottom:12px;}
+  .card li{margin-bottom:6px;}
+  a{color:var(--brand);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;}
+  footer .foot-links{margin-bottom:8px;}
+  footer .foot-links a{color:var(--muted);text-decoration:none;font-size:13px;margin:0 12px;}
+  footer .copyright{font-size:12px;color:var(--muted);}
+  @media (max-width:640px){.nav-links{display:none;}.wrap{padding:32px 16px 48px;}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="back" href="index.html">← Home</a>
-  <h1>About Us</h1>
-  <p>Retirement & Savings Tools exists for one reason: to give people free, fast, no-login answers to basic financial questions. No account required, no sales pitch, no hidden agenda.</p>
-  <p>Every calculator on this site runs entirely in your browser. We don't store your numbers, we don't track you, and we don't sell your data.</p>
-  <p>Financial planning shouldn't require a $300/hour advisor or a 200-page textbook. Start with the numbers — then decide if you need professional help.</p>
-  <div class="contact">
-    <h2>Contact</h2>
-    <p>Questions, suggestions, or feedback? Email us at <strong>hongln19951112@gmail.com</strong>.</p>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Retirement Savings Tools
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Calculators</a>
+      <a href="guides.html">Guides</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
   </div>
+</nav>
+
+<div class="wrap">
+
+  <h1>About Retirement Savings Tools</h1>
+  <p class="lead">We build free, browser-based calculators and clear guides to help you understand your money — without needing a financial advisor.</p>
+
+  <div class="card">
+    <h2>What we do</h2>
+    <p>Retirement Savings Tools is a collection of free financial calculators plus practical guides. Our goal is simple: help you see the real numbers behind saving, investing, and retirement planning.</p>
+    <ul>
+      <li>Calculate your 401(k), IRA, and retirement savings growth over time.</li>
+      <li>Figure out how much emergency fund you actually need.</li>
+      <li>See how compound interest works for — or against — you.</li>
+      <li>Understand social security, inflation, and net worth.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>How it works</h2>
+    <p>Every calculator runs entirely in your browser. The numbers you enter never leave your device — we don't store them, transmit them, or ask you to create an account. Just enter your numbers, see the result, and go.</p>
+  </div>
+
+  <div class="card">
+    <h2>Why we built this</h2>
+    <p>Financial planning can feel overwhelming — jargon, spreadsheets, and conflicting advice everywhere. We believe the basics should be simple and free. Start with the numbers, understand what they mean, and then decide if you need professional help.</p>
+  </div>
+
+  <div class="card">
+    <h2>Important disclaimer</h2>
+    <p>All calculators on this site provide estimates for general guidance only and are not financial, tax, or investment advice. Investment returns, contribution limits, and tax rules change over time. Always confirm details with a qualified financial professional before making decisions.</p>
+  </div>
+
+  <div class="card">
+    <h2>Get in touch</h2>
+    <p>Have a question, found a bug, or have an idea for a new calculator? <a href="contact.html">Contact us</a> — we'd love to hear from you.</p>
+  </div>
+
 </div>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="copyright">© 2026 Retirement Savings Tools</div>
+</footer>
+
 </body>
 </html>
