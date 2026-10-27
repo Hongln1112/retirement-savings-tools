@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/mo",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mo.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
