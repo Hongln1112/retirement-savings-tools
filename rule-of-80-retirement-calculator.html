@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rule of 80 Retirement Calculator — When Can You Retire With Full Benefits?</title>
+<meta name="description" content="Free Rule of 80 calculator: find out when your age plus years of service add up to 80, the common full-retirement-benefits rule used by pension plans. Simple and instant.">
+<link rel="canonical" href="https://retirement-savings-tools.vercel.app/rule-of-80-retirement-calculator.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF6F0;--ink:#2c2418;--muted:#7a6e5d;--brand:#8b6914;--brand-dark:#6b4f0f;
+    --good:#5a7a3a;--bad:#b04a3a;--line:#e8dfd0;--line-dark:#2c2418;--navy:#2c2418;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+
+  nav{background:var(--navy);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{color:#FAF6F0;font-weight:700;font-size:15px;letter-spacing:-.2px;text-decoration:none;display:flex;align-items:center;gap:8px;font-family:'Playfair Display',Georgia,serif;}
+  .nav-brand svg{width:22px;height:22px;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:#a89f8f;text-decoration:none;font-size:14px;font-weight:500;transition:color .15s;}
+  .nav-links a:hover{color:#FAF6F0;}
+
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 64px;}
+  h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(28px,4vw,38px);font-weight:900;line-height:1.2;margin-bottom:12px;
+  }
+  .sub{font-size:16px;color:var(--muted);max-width:580px;margin-bottom:32px;}
+  .card{background:#fff;border:1px solid var(--line);padding:28px;border-radius:4px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;letter-spacing:.02em;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);background:#fdfbf7;outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);}
+  .btn{width:100%;padding:15px;font-size:15px;font-weight:600;color:#fff;background:var(--brand);border:none;cursor:pointer;margin-top:8px;letter-spacing:.02em;transition:background .15s;}
+  .btn:hover{background:var(--brand-dark);}
+  .result{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;}
+  .result .num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(40px,8vw,52px);font-weight:900;color:var(--good);line-height:1.1;margin-top:8px;}
+  .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .result-row:last-child{border-bottom:none;}
+  .result-row .label{color:var(--muted);}
+  .result-row .val{font-weight:600;}
+  .section{margin-top:48px;}
+  .section h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:22px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);
+  }
+  .section p{font-size:15px;color:#4a4035;margin-bottom:14px;}
+  .faq-item{border:1px solid var(--line);margin-bottom:8px;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;}
+  .faq-item.open .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a p{padding:0 18px 16px;font-size:14px;color:#4a4035;margin:0;}
+  .disclaimer{font-size:12px;color:#9a8e7d;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);line-height:1.7;}
+  @media (max-width:520px){.wrap{padding:32px 16px 48px;}.card{padding:20px 16px;}}
+
+  @media print {
+    .btn, .faq-q .chev, .related-tools, .disclaimer { display: none !important; }
+    body { background: #fff !important; }
+    .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+    .result { border-top: 2px solid #333 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Retirement Savings Tools
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Calculators</a>
+      <a href="guides.html">Guides</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>Rule of 80 Retirement Calculator</h1>
+  <p class="sub">Find out when your age plus years of service add up to 80 — the classic "full retirement benefits" threshold used by many pension and retirement plans.</p>
+  <p style="font-size:15px;color:#4a4035;margin-bottom:24px;max-width:640px;">
+Under the Rule of 80, you qualify for full retirement benefits the moment your age plus your total years of service
+add up to <strong>80</strong> — for example, age 55 with 25 years of service, or age 60 with 20 years. Because every year you work
+pushes both numbers up by one, your "age + service" total grows by two each year, which is why long-serving employees
+can often retire well before the traditional retirement age. This free calculator tells you exactly when you'll hit the
+Rule of 80 based on your own numbers.
+</p>
+
+  <div class="card">
+    <div class="field">
+      <label for="current">Your current age</label>
+      <input class="input" id="current" type="number" min="18" max="80" placeholder="e.g. 45" value="45">
+    </div>
+    <div class="field">
+      <label for="service">Years of service completed</label>
+      <span class="hint">Total years you've already worked for this plan or employer.</span>
+      <input class="input" id="service" type="number" min="0" max="60" placeholder="e.g. 20" value="20">
+    </div>
+    <button class="btn" onclick="calc()">Calculate My Rule of 80 Date</button>
+
+    <div class="result hidden" id="result">
+      <div class="big">You'll reach the Rule of 80 at age</div>
+      <div class="num" id="ret-age">0</div>
+      <div style="margin-top:24px;">
+        <div class="result-row"><span class="label">Years until eligible</span><span class="val" id="years-left">0</span></div>
+        <div class="result-row"><span class="label">Total service at that point</span><span class="val" id="total-service">0 years</span></div>
+        <div class="result-row"><span class="label">Age + service total</span><span class="val" id="sum-now">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>How the Rule of 80 works</h2>
+    <p>The Rule of 80 says your age plus your years of service must total 80 before you can retire with full pension or retirement benefits. It's most common in government, teacher, police, and firefighter pension plans, where it rewards long careers over early starts.</p>
+    <p>Every year you keep working, both your age and your service count climb by one — so your combined total rises by two each year. That means reaching 80 isn't about waiting until a fixed age; it's about the interaction between <strong>how long you've worked</strong> and <strong>how old you are</strong>.</p>
+    <p>For example: you're 50 with 18 years of service (total 68). You're 12 short of 80, and since your total grows by 2 per year, you'll qualify in <strong>6 more years</strong> — at age 56 with 24 years of service. Retiring under the Rule of 80 often lets people leave work years earlier than the standard 65.</p>
+  </div>
+
+  <div class="section">
+    <h2>Rule of 80 vs. Rule of 75</h2>
+    <p>Some plans use a lower threshold. The Rule of 75 (age + service = 75) qualifies you for full benefits sooner — it's often found in roles that start later in life, like law enforcement or certain union jobs. If your plan uses 75 instead, use our <a href="rule-of-75-retirement-calculator.html" style="color:var(--brand);font-weight:600;">Rule of 75 calculator</a>.</p>
+  </div>
+
+  <div class="section">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <button class="faq-q">What exactly does the Rule of 80 mean? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>It means your age plus your total years of service must equal 80. Once they add up to 80, you're eligible for full retirement benefits under the plan — you don't have to wait for a specific retirement age like 65.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">How is the Rule of 80 calculated? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Add your current age to your years of service. If the total is under 80, divide the shortfall by 2 (because your total grows by 2 every year) to find how many more years you need. Round up to get your eligibility age.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Do all retirement plans use the Rule of 80? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>No. It's common in public-sector and union pension plans, but many plans use different formulas, like the Rule of 75, Rule of 85, or a fixed age plus minimum service years. Check your specific plan documents to confirm which rule applies to you.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I retire even earlier than the Rule of 80? <span class="chev">▼</span></button>
+      <div class="faq-a"><p>Often yes, but with reduced benefits. Most plans let you retire early with a lower pension, or let you keep working until your age-plus-service total reaches the full threshold. Early retirement usually means permanently reduced monthly payments.</p></div>
+    </div>
+  </div>
+
+  <div class="section related-tools">
+  <h2>Related Tools</h2>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="rule-of-75-retirement-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Rule of 75 Retirement Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">If your plan uses the lower 75 threshold, use this instead</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="retirement-age-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Retirement Age Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">The 4% rule approach to when you can stop working</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+  <a style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;" href="social-security-calculator.html">
+  <div><strong style="font-family:'Playfair Display',Georgia,serif;font-size:16px;">Social Security Calculator</strong><div style="font-size:13px;color:var(--muted);margin-top:2px;">Estimate your monthly benefit around retirement</div></div>
+  <span style="color:var(--brand);font-weight:600;">→</span>
+</a>
+</div>
+
+  <div class="disclaimer">
+    This calculator is a general guide and is not financial or pension advice. Eligibility rules vary by plan — confirm your plan's specific formula and terms with your employer or plan administrator before making retirement decisions.
+  </div>
+</div>
+
+<script>
+function calc(){
+  var current=parseInt(document.getElementById('current').value)||45;
+  var service=parseInt(document.getElementById('service').value)||0;
+  var sum=current+service;
+  var needed,retAge;
+  if(sum>=80){
+    needed=0;retAge=current;
+  }else{
+    needed=Math.ceil((80-sum)/2);
+    retAge=current+needed;
+  }
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('ret-age').textContent=retAge;
+  document.getElementById('years-left').textContent=(needed===0?'Already eligible':needed+' year'+(needed===1?'':'s'));
+  document.getElementById('total-service').textContent=(service+needed)+' years';
+  document.getElementById('sum-now').textContent=sum;
+}
+document.querySelectorAll('.faq-q').forEach(function(q){
+  q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
+});
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+          "@type": "Question",
+          "name": "What exactly does the Rule of 80 mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It means your age plus your total years of service must equal 80. Once they add up to 80, you're eligible for full retirement benefits under the plan — you don't have to wait for a specific retirement age like 65."
+          }
+        },{
+          "@type": "Question",
+          "name": "How is the Rule of 80 calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add your current age to your years of service. If the total is under 80, divide the shortfall by 2 (because your total grows by 2 every year) to find how many more years you need. Round up to get your eligibility age."
+          }
+        },{
+          "@type": "Question",
+          "name": "Do all retirement plans use the Rule of 80?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It's common in public-sector and union pension plans, but many plans use different formulas, like the Rule of 75, Rule of 85, or a fixed age plus minimum service years. Check your specific plan documents to confirm which rule applies to you."
+          }
+        },{
+          "@type": "Question",
+          "name": "Can I retire even earlier than the Rule of 80?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Often yes, but with reduced benefits. Most plans let you retire early with a lower pension, or let you keep working until your age-plus-service total reaches the full threshold. Early retirement usually means permanently reduced monthly payments."
+          }
+        }]
+}
+</script>
+</body>
+</html>
